@@ -27,7 +27,7 @@ You must sign up then login in with valid informations to go to home page and re
 
 ### Links
 
-- Live Site URL: [Cinema Site](https://im7.ezgif.com/tmp/ezgif-7-b639c1ef9977.gif)
+- Live Site URL: [Cinema Site](https://omarfayez.github.io/11.MoviesSite/)
 - Used Api For Movies : [Themoviedb Api](https://developers.themoviedb.org/3/getting-started/introduction)
 
 ## Development server
