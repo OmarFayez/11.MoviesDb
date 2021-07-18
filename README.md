@@ -27,7 +27,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ### Links
 
-- Live Site URL: [Cinema Site](https://omarfayez.github.io/11.MoviesSite/)
+- Live Site URL: [Cinema Site](https://omarfayeznegm.github.io/Movies/)
 - Used Api For Movies : [Themoviedb Api](https://developers.themoviedb.org/3/getting-started/introduction)
 
 ## Development server
