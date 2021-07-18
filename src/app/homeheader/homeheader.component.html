@@ -1,0 +1,20 @@
+<header class="vh-100 d-flex align-items-end">
+   <div class="container">
+    <h1 class="font-weight-bold">Our Latest Movies</h1>
+    <owl-carousel-o [options]="customOptions">
+  
+      <ng-container *ngFor="let movie of trendingMovies; let i=index">
+        <ng-template carouselSlide [id]="i.toString()" >
+          <a [routerLink]="['/moviedetails','movie',movie?.id]">
+            <div class="cover">
+              <img  *ngIf="movie?.poster_path!==null" [src]="prefixSrc+movie?.poster_path" class="w-100" [alt]="movie.title" >
+              <img *ngIf="movie?.poster_path===null" [src]=anonymousImage class="w-100" [alt]="movie.title">
+              <div class="overlay"></div>
+            </div>
+         </a>
+        </ng-template>
+      </ng-container>
+  
+    </owl-carousel-o>
+   </div>
+</header>

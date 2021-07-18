@@ -1,0 +1,51 @@
+
+
+<form [formGroup]="registerForm" (ngSubmit)=submitRegisterForm(registerForm) class="w-75 mx-auto py-5">
+    <div *ngIf="error" class="py-1 font-weight-bold alert alert-danger text-center">{{error}}}</div>
+    <div class="form-group">
+        <label class="font-weight-bold" for="firstname">First Name :</label>
+        <input formControlName="first_name" id="firstname" type="text" class="form-control" placeholder="Ex : Omar">
+        <div *ngIf="registerForm.get('first_name')?.errors!=null && registerForm.get('first_name')?.dirty" class=" font-weight-bold text-danger mt-2">
+            <p class="my-0" *ngIf='registerForm.get("first_name")?.errors?.required' >Required</p>
+            <p class="my-0" *ngIf='registerForm.get("first_name")?.errors?.minlength'>Min Chars Is 3</p>
+            <p class="my-0"  *ngIf='registerForm.get("first_name")?.errors?.maxlength'>Max Chars Is 20</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="font-weight-bold" for="lastname">Last Name : </label>
+        <input formControlName="last_name" id="lastname" type="text" class="form-control" placeholder="Ex : Fayez">
+        <div *ngIf="registerForm.get('last_name')?.errors!=null && registerForm.get('last_name')?.dirty" class=" font-weight-bold text-danger mt-2">
+            <p class="my-0" *ngIf='registerForm.get("last_name")?.errors?.required' >Required</p>
+            <p class="my-0" *ngIf='registerForm.get("last_name")?.errors?.minlength'>Min Chars Is 3</p>
+            <p class="my-0" *ngIf='registerForm.get("last_name")?.errors?.maxlength'>Max Chars Is 20</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="font-weight-bold" for="age">Age :</label>
+        <input formControlName="age" id="age" type="number" class="form-control" placeholder="Ex : 25">
+        <div *ngIf="registerForm.get('age')?.errors!=null && registerForm.get('age')?.dirty" class=" font-weight-bold text-danger mt-2">
+            <p class="my-0" *ngIf='registerForm.get("age")?.errors?.required' >Required</p>
+            <p class="my-0" *ngIf='registerForm.get("age")?.errors?.min'>Min Age Is 15</p>
+            <p class="my-0" *ngIf='registerForm.get("age")?.errors?.max'>Max Age Is 80</p>
+        </div>
+   </div>
+    <div class="form-group">
+        <label class="font-weight-bold" for="email">Email :</label>
+        <input formControlName="email" id="email" type="email" class="form-control" placeholder="Ex : abc@gmail.com">
+        <div *ngIf='registerForm.get("email")?.errors!=null && registerForm.get("email")?.dirty' class=" font-weight-bold text-danger mt-2">
+            <p class="my-0" *ngIf='registerForm.get("email")?.errors?.required'>Required</p>
+            <p class="my-0" *ngIf='registerForm.get("email")?.errors?.email'>Enter Valid Email Contain @Chars</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="font-weight-bold" for="password">Password :</label>
+        <input formControlName="password" id="password" type="password" class="form-control" placeholder="Enter More Than 4 Chars">
+        <div *ngIf='registerForm.get("password")?.errors!=null && registerForm.get("password")?.dirty' class=" font-weight-bold text-danger mt-2">
+            <p class="my-0" *ngIf='registerForm.get("password")?.errors?.required'>Required</p>
+            <p class="my-0" *ngIf='registerForm.get("password")?.errors?.pattern'>Enter From 5 To 30 Chars </p>
+        </div>
+    </div>
+    <div class="text-right">
+    <button [disabled]="registerForm.invalid" class="btn btn-primary  mt-3">Register</button>
+    </div>
+</form>

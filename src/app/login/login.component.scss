@@ -1,0 +1,17 @@
+.ng-valid:not(form)  {
+    border-left: 5px solid #2b8a30; /* green */
+  }
+  .ng-invalid.ng-dirty:not(form)   {
+    border-left: 5px solid #a94442; /* red */
+  }
+  
+  .ng-untouched:not(form) // :not(form) يعنى الانبوتس بس مش الفورم كلها
+  {
+        background-color:rgb(216, 215, 215) ;
+  }
+  .ng-dirty:not(form) // :not(form) يعنى الانبوتس بس مش الفورم كلها
+  {
+        background-color:#fff ;
+        color:#000;
+        font-weight: 600;
+  }

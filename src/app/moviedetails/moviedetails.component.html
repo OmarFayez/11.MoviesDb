@@ -1,0 +1,58 @@
+<div *ngIf="isLoading" class="loading d-flex align-items-center justify-content-center">
+    <div class="spinner"></div>
+</div>
+<div class="container py-3 movie-details">
+ <div class="row">
+        <div class="col-md-4 ">
+            <img  *ngIf="movieDetails?.poster_path!==null&& movieDetails?.profile_path!==null" [src]="imgPrefix+(movieDetails?.poster_path||movieDetails?.profile_path)" class="w-100" [alt]="movieDetails?.title||movieDetails?.name">
+            <img *ngIf="movieDetails?.poster_path==null&& movieDetails?.profile_path==null" [src]=anonymousImage class="w-100" [alt]="movieDetails?.title||movieDetails?.name">
+       </div>
+       <div class="col-md-8">
+           <div  *ngIf="type!='person' ;else personDetails" class="movie-details p-3">
+            <h1 class="font-weight-bold mb-3 ">{{movieDetails?.title||movieDetails?.name}}</h1>
+            <p class="second-color">{{movieDetails?.tagline}}</p>
+            <div class="geners mb-3">
+                <span *ngFor="let genre of movieDetails?.genres" class="p-2 btn btn-primary mr-2 mb-2">{{genre.name}}</span>
+            </div>
+            <p>Vote : {{movieDetails?.vote_average}}</p>
+            <p>Vote Count : {{movieDetails?.vote_count}}</p>
+            <p>Popularity : {{movieDetails?.popularity}}</p>
+            <p>Release Date : {{movieDetails?.release_date||movieDetails?.first_air_date}}</p>
+            <p class="second-color">{{movieDetails?.overview}}</p>
+           </div>
+       </div>
+
+
+       <ng-template #personDetails>
+        <div   class="movie-details p-3">
+            <h1 class="font-weight-bold mb-3">{{movieDetails?.name}}</h1>
+            <p>Birthday : {{movieDetails?.birthday}}</p>
+            <p>Place Of Birth : {{movieDetails?.place_of_birth}}</p>
+            <p>popularity : {{movieDetails?.popularity}}</p>
+            <p class="second-color">{{movieDetails?.biography}}</p>
+           </div>
+       </ng-template>
+ </div>
+ <div *ngIf='works.length!==0' class="credits mt-5">
+        <h3 *ngIf='type==="person"'  class=" text-center mb-3 "><span class="btn btn-outline-info px-3 font-weight-bold">Credits</span></h3>
+        <h3 *ngIf='type!=="person"'  class=" text-center mb-3 "><span class="btn btn-outline-info px-3 font-weight-bold">Similar Credits</span></h3>
+ <owl-carousel-o [options]="customOptions">
+   <ng-container *ngFor="let movie of works; let i=index">
+     <ng-template carouselSlide [id]="i.toString()" >
+        <a (click)="reload(movie?.media_type,movie?.id)"><div class="cover position-relative ">
+            <div class="cover">
+            <img  *ngIf="movie?.poster_path!==null&& movie?.profile_path!==null" [src]="imgPrefix2+(movie?.poster_path||movie?.profile_path)" class="w-100" [alt]="movieDetails?.title||movieDetails?.name">
+            <img *ngIf="movie?.poster_path==null" [src]=anonymousImage class="w-100" [alt]="movie.title">
+            <div class="overlay"></div>
+            </div>
+            <div class="rate p-2 shadow">
+            {{movie?.vote_average}}
+            </div>
+        </div>
+        <h6 class="text-center">{{movie?.title||movie?.name}}</h6>
+        </a>
+     </ng-template>
+   </ng-container>
+ </owl-carousel-o>
+</div>
+</div>

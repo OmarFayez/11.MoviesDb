@@ -1,0 +1,32 @@
+
+
+<form [formGroup]="loginForm" (ngSubmit)=submitLoginForm(loginForm) class="w-75 mx-auto py-5">
+    <div *ngIf="error" class="py-1 font-weight-bold alert alert-danger text-center">{{error}}</div>
+    <div class="form-group">
+        <label class="font-weight-bold" for="email">Email :</label>
+        <input formControlName="email" id="email" type="email" class="form-control" placeholder="Ex : abc@gmail.com">
+        <div *ngIf='loginForm.get("email")?.errors!=null && loginForm.get("email")?.dirty' class=" mt-2 font-weight-bold text-danger">
+            <p class="my-0" *ngIf='loginForm.get("email")?.errors?.required'>Required</p>
+            <p class="my-0" *ngIf='loginForm.get("email")?.errors?.email'>Enter Valid Email Contain @Chars</p>
+        </div>
+    </div>
+    <div class="form-group ">
+        <label class="font-weight-bold" for="password">Password :</label>
+        <input formControlName="password" id="password" type="password" class="form-control" placeholder="Enter More Than 4 Chars">
+        <div *ngIf='loginForm.get("password")?.errors!=null && loginForm.get("password")?.dirty' class="mt-2 font-weight-bold text-danger">
+            <p class="my-0" *ngIf='loginForm.get("password")?.errors?.required'>Required</p>
+            <p class="my-0" *ngIf='loginForm.get("password")?.errors?.pattern'>Enter From 5 To 30 Chars </p>
+        </div>
+    </div>
+    <div class="login row mt-4">
+        <div class="col-sm-8 text-left">
+            <p class="second-color ">Dont have acoount ? <a class="text-light" routerLink="/register"> Register Now</a> </p>
+           </div>
+       <div class="col-sm-4 text-right ">
+        <button [disabled]="loginForm.invalid" class="btn btn-primary">Login</button>
+       </div>
+       
+    </div>
+</form>
+
+<p class="mt-4 mb-0 fixed-bottom text-center text-light mb-2 copy-rights">Copyright © 2021  <a>Omar Fayez</a></p>
