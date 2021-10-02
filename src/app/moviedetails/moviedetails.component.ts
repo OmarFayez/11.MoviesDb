@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit,HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MoviesService } from '../movies.service';
 import { OwlOptions } from 'ngx-owl-carousel-o';
+import {Title} from "@angular/platform-browser";
 
 
 @Component({
@@ -12,7 +13,7 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
 export class MoviedetailsComponent implements OnInit,OnDestroy {
   id:string=""
   type:string=""
-  movieDetails:any={}
+  movieDetails:any;
   works:any=[]
   imgPrefix:string="https://image.tmdb.org/t/p/w400"
   imgPrefix2:string="https://image.tmdb.org/t/p/w200"
@@ -50,11 +51,21 @@ export class MoviedetailsComponent implements OnInit,OnDestroy {
     },
     nav: true
   }
-  constructor(private _ActivatedRoute:ActivatedRoute ,private _MoviesService:MoviesService,private _Router:Router) {}
+  constructor(private _ActivatedRoute:ActivatedRoute ,private _MoviesService:MoviesService,
+    private _Router:Router,private titleService:Title) {
+      
+    }
 
+  @HostListener('window:popstate', ['$event'])
+  onPopState() {
+    // console.log("saf")
+    // this.id=this._ActivatedRoute.snapshot.params.id;
+    this._Router.navigateByUrl('/RefreshComponent', { skipLocationChange: true })
 
+  }
 
   ngOnInit(): void {
+
 
     document.body.style.overflow="hidden"
     this.id=this._ActivatedRoute.snapshot.params.id
@@ -65,6 +76,7 @@ export class MoviedetailsComponent implements OnInit,OnDestroy {
         this.movieDetails=data
         this.isLoading=false
         document.body.style.overflow="auto"
+        this.titleService.setTitle(this.movieDetails?.title||this.movieDetails?.name);
       })
       this._MoviesService.getSimilarWorks("movie",this.id).subscribe((data)=>{
         this.works=data?.results
@@ -76,6 +88,7 @@ export class MoviedetailsComponent implements OnInit,OnDestroy {
         this.movieDetails=data
         this.isLoading=false
         document.body.style.overflow="auto"
+        this.titleService.setTitle(this.movieDetails?.title||this.movieDetails?.name);
       })
       this._MoviesService.getSimilarWorks("tv",this.id).subscribe((data)=>{
         this.works=data?.results
@@ -87,13 +100,14 @@ export class MoviedetailsComponent implements OnInit,OnDestroy {
         this.movieDetails=data
         this.isLoading=false
         document.body.style.overflow="auto"
+        this.titleService.setTitle(this.movieDetails?.title||this.movieDetails?.name);
       })
 
       this._MoviesService.getPersonWorks(this.id).subscribe((data)=>{
         this.works=data?.cast
       })
     }
-    
+ 
    
   }
   reload(media_type:string,id:number)
@@ -103,6 +117,8 @@ export class MoviedetailsComponent implements OnInit,OnDestroy {
       this._Router.navigateByUrl('/RefreshComponent', { skipLocationChange: true }).then(() => {
         this._Router.navigate(['/moviedetails',media_type,id]);
     }); 
+    // بيخلى الكمبونت يتعملة ريفرش من اول وجديد علشان يعرض المحتوى الجديد فى نفس الكمبوننت
+    //فبيخلى الكمبوننت يعمل اعادة تشغيل للكونستركتر وال انجي اون انت
     }
     else if(this.type=="movie")
     {

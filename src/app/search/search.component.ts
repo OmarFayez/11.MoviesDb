@@ -40,7 +40,7 @@ sub1:any;
         else
         {
           this.movies=response.results
-           this.totalMovies=response.total_results
+          this.totalMovies=response.total_results
           this.error=""
           this.isLoading=false
           document.body.style.overflow="auto"

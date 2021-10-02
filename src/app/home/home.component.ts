@@ -30,10 +30,7 @@ export class HomeComponent implements OnInit  ,OnDestroy ,AfterViewInit {
       this.trendingMovies=response.results.slice(0,10)
       this.trendingMoviesList=response.results
     })
-    this.sub2=this._MoviesService.getMedia("tv",1).subscribe((response)=>{
-      this.trendingTv=response.results.slice(0,10)
-
-    })
+    this.sub2=this._MoviesService.getMedia("tv",1)
     this.sub3=this._MoviesService.getMedia("person",1).subscribe((response)=>{
       this.trendingPerson=response.results.slice(0,10)
     })
@@ -48,7 +45,6 @@ export class HomeComponent implements OnInit  ,OnDestroy ,AfterViewInit {
 
 ngOnDestroy(): void {
   this.sub1.unsubscribe();
-  this.sub2.unsubscribe();
   this.sub3.unsubscribe();
  }
 

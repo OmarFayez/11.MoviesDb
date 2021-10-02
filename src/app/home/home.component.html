@@ -4,6 +4,7 @@
 
 <app-homeheader [trendingMovies]="trendingMoviesList"></app-homeheader>
 <div class="container py-3">
+    <!-- Movies -->
     <div class="row no-gutters">
         <div class="col-md-4 col-sm-8 d-flex align-items-center ">
             <div class="header ">
@@ -30,7 +31,7 @@
             </div>
         </div>
     </div>
-    
+    <!-- Tv -->
     <div class="row no-gutters">
         <div class="col-md-4 col-sm-8 d-flex align-items-center ">
             <div class="header ">
@@ -40,7 +41,7 @@
             <div class="brdr w-75 my-3 "></div>
             </div>
         </div>
-        <div *ngFor="let tv of trendingTv" class="col-lg-2 col-sm-4 p-2 ">
+        <div *ngFor="let tv of $any(sub2|async).results.slice(0,10)" class="col-lg-2 col-sm-4 p-2 ">
             <div class="tv">
                 <a [routerLink]="['/moviedetails',type[1],tv?.id]">
                     <div class="poster position-relative ">
@@ -59,7 +60,7 @@
             </div>
         </div>
     </div>
-   
+   <!-- People -->
     <div class="row no-gutters mb-3">
         <div class="col-md-4 col-sm-8 d-flex align-items-center ">
             <div class="header ">
