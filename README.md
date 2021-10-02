@@ -5,7 +5,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 - [Overview](#overview)
   - [About](#About)
-  - [Screenshot](#screenshot)
   - [Links](#links)
 - [Development server](#Development-server)
 - [Code scaffolding](#Code-scaffolding)
@@ -20,14 +19,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 -This is a cinema site where you can see latest Trending Movies, Trending Tv and Trending People, also you can Open any movie or tv to see details and its similar credits or open any actor to see his details and his credits and you can go to any of his credits.You can search for any movie you want. <br>
 -You must sign up then login in with valid informations to go to home page and rest pages of the site.
 
-
-### Screenshot
-
-![cinema](https://im7.ezgif.com/tmp/ezgif-7-1fd41e25cecc.webp)
-
 ### Links
 
-- Live Site URL: [Cinema Site](https://omarfayez.github.io/11.MoviesSite/)
+- Live Site URL: [Cinema Site](https://omarfayeznegm.github.io/Movies/)
 - Used Api For Movies : [Themoviedb Api](https://developers.themoviedb.org/3/getting-started/introduction)
 
 ## Development server
