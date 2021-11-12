@@ -56,12 +56,10 @@ export class MoviedetailsComponent implements OnInit,OnDestroy {
       
     }
 
+  //If i were at same component and want to go to forward and back with loading new data.
   @HostListener('window:popstate', ['$event'])
   onPopState() {
-    // console.log("saf")
-    // this.id=this._ActivatedRoute.snapshot.params.id;
     this._Router.navigateByUrl('/RefreshComponent', { skipLocationChange: true })
-
   }
 
   ngOnInit(): void {
@@ -110,6 +108,7 @@ export class MoviedetailsComponent implements OnInit,OnDestroy {
  
    
   }
+  
   reload(media_type:string,id:number)
   {
     if(media_type!=null)

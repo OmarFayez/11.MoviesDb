@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit,AfterViewInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { MoviesService } from '../movies.service';
 
 
@@ -15,23 +16,25 @@ export class HomeComponent implements OnInit  ,OnDestroy ,AfterViewInit {
   trendingTv:any[]=[]
   trendingPerson:any[]=[]
   type:string[]=["movie","tv","person"]
-  sub1:any;
-  sub2:any;
-  sub3:any;
+  moviesSubscription:any;
+  tvSubscription:Observable<any>;
+  peopleSubscription:any;
   isLoading: boolean=true;
   anonymousImage:string="https://p0.piqsels.com/preview/375/145/317/person-human-mask-head.jpg"
 
-  constructor(private _MoviesService:MoviesService) { }
+  constructor(private _MoviesService:MoviesService) { 
+    this.tvSubscription=this._MoviesService.getMedia("tv",1)
+  }
 
   ngOnInit(): void {
     document.body.style.overflow="hidden"
 
-    this.sub1=this._MoviesService.getMedia("movie",1).subscribe((response)=>{
+    this.moviesSubscription=this._MoviesService.getMedia("movie",1).subscribe((response)=>{
       this.trendingMovies=response.results.slice(0,10)
       this.trendingMoviesList=response.results
     })
-    this.sub2=this._MoviesService.getMedia("tv",1)
-    this.sub3=this._MoviesService.getMedia("person",1).subscribe((response)=>{
+    
+    this.peopleSubscription=this._MoviesService.getMedia("person",1).subscribe((response)=>{
       this.trendingPerson=response.results.slice(0,10)
     })
   }
@@ -44,8 +47,8 @@ export class HomeComponent implements OnInit  ,OnDestroy ,AfterViewInit {
     }
 
 ngOnDestroy(): void {
-  this.sub1.unsubscribe();
-  this.sub3.unsubscribe();
+  this.moviesSubscription.unsubscribe();
+  this.peopleSubscription.unsubscribe();
  }
 
 }

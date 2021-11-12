@@ -41,24 +41,28 @@
             <div class="brdr w-75 my-3 "></div>
             </div>
         </div>
-        <div *ngFor="let tv of $any(sub2|async).results.slice(0,10)" class="col-lg-2 col-sm-4 p-2 ">
-            <div class="tv">
-                <a [routerLink]="['/moviedetails',type[1],tv?.id]">
-                    <div class="poster position-relative ">
-                <div class="cover">
-                    <img *ngIf="tv?.poster_path!==null" [src]="prefixSrc+tv?.poster_path" class="w-100" [alt]="tv?.name||tv.title">
-                    <img *ngIf="tv?.poster_path===null" [src]=anonymousImage class="w-100" [alt]="tv?.name||tv.title">
+        <ng-container *ngIf='tvSubscription|async as tvs'>
 
-                    <div class="overlay"></div>
+            <div *ngFor="let tv of tvs.results" class="col-lg-2 col-sm-4 p-2 ">
+                <div class="tv">
+                    <a [routerLink]="['/moviedetails',type[1],tv?.id]">
+                        <div class="poster position-relative ">
+                    <div class="cover">
+                        <img *ngIf="tv?.poster_path!==null" [src]="prefixSrc+tv?.poster_path" class="w-100" [alt]="tv?.name||tv.title">
+                        <img *ngIf="tv?.poster_path===null" [src]=anonymousImage class="w-100" [alt]="tv?.name||tv.title">
+    
+                        <div class="overlay"></div>
+                    </div>
+                    <div class="rate p-2 shadow">
+                        {{tv?.vote_average}}
+                    </div>
                 </div>
-                <div class="rate p-2 shadow">
-                    {{tv?.vote_average}}
+                <h3 class="h6 font-weight-bold text-center">{{tv?.name}}</h3>
+            </a>
                 </div>
             </div>
-            <h3 class="h6 font-weight-bold text-center">{{tv?.name}}</h3>
-        </a>
-            </div>
-        </div>
+        </ng-container>
+      
     </div>
    <!-- People -->
     <div class="row no-gutters mb-3">
