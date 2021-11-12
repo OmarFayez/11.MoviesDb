@@ -23,7 +23,7 @@
       <div class="d-flex align-items-center justify-content-between ">
        <div class="search-icons d-flex align-items-center ">
         <div *ngIf="isLogin" class=" my-2 ">
-          <input class="form-control mr-sm-2"(keyup)="search()" [(ngModel)]="searchTerm" type="search" placeholder="Search Movies" aria-label="Search">
+          <input class="form-control mr-sm-2"(keyup)="search($event)" type="search" placeholder="Search Movies" aria-label="Search">
         </div>
           <div class="icons mx-3">
             <a><i class="fab mx-2 fa-facebook"></i></a>

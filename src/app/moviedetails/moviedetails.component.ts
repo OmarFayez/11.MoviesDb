@@ -65,7 +65,7 @@ export class MoviedetailsComponent implements OnInit,OnDestroy {
   ngOnInit(): void {
 
 
-    document.body.style.overflow="hidden"
+
     this.id=this._ActivatedRoute.snapshot.params.id
     this.type=this._ActivatedRoute.snapshot.params.type
     if(this.type=="movie")
@@ -73,7 +73,6 @@ export class MoviedetailsComponent implements OnInit,OnDestroy {
       this.sub1=this._MoviesService.getMovieDetails("movie",this.id).subscribe((data)=>{
         this.movieDetails=data
         this.isLoading=false
-        document.body.style.overflow="auto"
         this.titleService.setTitle(this.movieDetails?.title||this.movieDetails?.name);
       })
       this._MoviesService.getSimilarWorks("movie",this.id).subscribe((data)=>{
@@ -85,7 +84,6 @@ export class MoviedetailsComponent implements OnInit,OnDestroy {
       this.sub1=this._MoviesService.getMovieDetails("tv",this.id).subscribe((data)=>{
         this.movieDetails=data
         this.isLoading=false
-        document.body.style.overflow="auto"
         this.titleService.setTitle(this.movieDetails?.title||this.movieDetails?.name);
       })
       this._MoviesService.getSimilarWorks("tv",this.id).subscribe((data)=>{
@@ -97,10 +95,8 @@ export class MoviedetailsComponent implements OnInit,OnDestroy {
       this.sub1=this._MoviesService.getMovieDetails("person",this.id).subscribe((data)=>{
         this.movieDetails=data
         this.isLoading=false
-        document.body.style.overflow="auto"
         this.titleService.setTitle(this.movieDetails?.title||this.movieDetails?.name);
       })
-
       this._MoviesService.getPersonWorks(this.id).subscribe((data)=>{
         this.works=data?.cast
       })

@@ -13,29 +13,26 @@ export class TvComponent implements OnInit,OnDestroy {
   totaltv:any;
   tvList:any[]=[]
   isLoading: boolean=true;
-  sub1:any;
+  subscription:any;
   constructor(private _MoviesService:MoviesService) { }
  
   ngOnInit(): void {
-    document.body.style.overflow="hidden"
-    this.sub1=this._MoviesService.getMedia("tv",this.page).subscribe((response)=>{
+    this.subscription=this._MoviesService.getMedia("tv",this.page).subscribe((response)=>{
       this.tvList=response.results
       this.totaltv=response.total_results
       this.isLoading=false
-      document.body.style.overflow="auto"
     })
   }
+
   nextPage(page:number)
   {
     this._MoviesService.getMedia("tv",page).subscribe((response)=>{
       this.tvList=response.results
       this.totaltv=response.total_results
-
     })
   }
+
   ngOnDestroy(): void {
-    this.sub1.unsubscribe();
-
+    this.subscription.unsubscribe();
   }
-
 }

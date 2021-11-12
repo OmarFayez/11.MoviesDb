@@ -14,22 +14,25 @@
             <div class="brdr w-75 my-3 "></div>
             </div>
         </div>
-        <div *ngFor="let movie of trendingMovies" class="col-lg-2 col-sm-4 p-2 ">
-            <div class="movie">
-               <a [routerLink]="['/moviedetails',type[0],movie?.id]"> <div class="cover position-relative ">
-                <div class="cover">
-                    <img *ngIf="movie?.poster_path!=null" [src]="prefixSrc+movie?.poster_path" class="w-100" [alt]="movie.title">
-                    <img *ngIf="movie?.poster_path==null" [src]=anonymousImage class="w-100" [alt]="movie.title">
-
-                    <div class="overlay"></div>
+        <ng-container *ngIf='(movies$|async) as movies'>
+            <div *ngFor="let movie of movies" class="col-lg-2 col-sm-4 p-2 ">
+                <div class="movie">
+                   <a [routerLink]="['/moviedetails',type[0],movie?.id]"> <div class="cover position-relative ">
+                    <div class="cover">
+                        <img *ngIf="movie?.poster_path!=null" [src]="prefixSrc+movie?.poster_path" class="w-100" [alt]="movie.title">
+                        <img *ngIf="movie?.poster_path==null" [src]=anonymousImage class="w-100" [alt]="movie.title">
+    
+                        <div class="overlay"></div>
+                    </div>
+                    <div class="rate p-2 shadow">
+                        {{movie?.vote_average}}
+                    </div>
                 </div>
-                <div class="rate p-2 shadow">
-                    {{movie?.vote_average}}
+                <h3 class="h6 font-weight-bold text-center ">{{movie?.title}}</h3>  </a>
                 </div>
             </div>
-            <h3 class="h6 font-weight-bold text-center ">{{movie?.title}}</h3>  </a>
-            </div>
-        </div>
+        </ng-container>
+       
     </div>
     <!-- Tv -->
     <div class="row no-gutters">
@@ -41,9 +44,8 @@
             <div class="brdr w-75 my-3 "></div>
             </div>
         </div>
-        <ng-container *ngIf='tvSubscription|async as tvs'>
-
-            <div *ngFor="let tv of tvs.results" class="col-lg-2 col-sm-4 p-2 ">
+        <ng-container *ngIf='(tv$|async) as tvs'>
+            <div *ngFor="let tv of tvs" class="col-lg-2 col-sm-4 p-2 ">
                 <div class="tv">
                     <a [routerLink]="['/moviedetails',type[1],tv?.id]">
                         <div class="poster position-relative ">
@@ -62,7 +64,6 @@
                 </div>
             </div>
         </ng-container>
-      
     </div>
    <!-- People -->
     <div class="row no-gutters mb-3">
@@ -74,17 +75,20 @@
             <div class="brdr w-75 my-3 "></div>
             </div>
         </div>
-        <div *ngFor="let person of trendingPerson" class="col-lg-2 col-sm-4 p-2 ">
-            <div class="person">
-                <a [routerLink]="['/moviedetails',type[2],person?.id]">
-                    <div class="cover">
-                        <img *ngIf="person?.profile_path!=null" [src]="prefixSrc+person?.profile_path" class="w-100" [alt]="person?.name">
-                         <img *ngIf="person?.profile_path==null" [src]=anonymousImage class="w-100" [alt]="person?.name">
-                        <div class="overlay"></div>
-                    </div>
-                    <h3 class="h6 font-weight-bold text-center">{{person?.name}}</h3>  
-                </a>
+        <ng-container *ngIf='(people$|async) as peoples'>
+            <div *ngFor="let person of peoples" class="col-lg-2 col-sm-4 p-2 ">
+                <div class="person">
+                    <a [routerLink]="['/moviedetails',type[2],person?.id]">
+                        <div class="cover">
+                            <img *ngIf="person?.profile_path!=null" [src]="prefixSrc+person?.profile_path" class="w-100" [alt]="person?.name">
+                             <img *ngIf="person?.profile_path==null" [src]=anonymousImage class="w-100" [alt]="person?.name">
+                            <div class="overlay"></div>
+                        </div>
+                        <h3 class="h6 font-weight-bold text-center">{{person?.name}}</h3>  
+                    </a>
+                </div>
             </div>
-        </div>
+        </ng-container>
+       
     </div>
 </div>

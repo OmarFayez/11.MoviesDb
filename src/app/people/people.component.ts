@@ -21,12 +21,11 @@ export class PeopleComponent implements OnInit,OnDestroy,AfterContentInit {
 
 
   ngOnInit(): void {
-    document.body.style.overflow="hidden"
+
      this.sub1=this. _MoviesService.getMedia("person",this.page).subscribe((response)=>{
       this.peopleList=response.results
       this.totalPeople=response.total_results
       this.isLoading=false
-      document.body.style.overflow="auto"
     })
   }
 

@@ -21,13 +21,10 @@ export class MoviesComponent implements OnInit,OnDestroy {
   }
 
   ngOnInit(): void {
-    document.body.style.overflow="hidden"
-
     this.sub1=this._MoviesService.getMedia("movie",this.page).subscribe((response)=>{
       this.moviesList=response.results
       this.totalMovies=response.total_results
       this.isLoading=false
-      document.body.style.overflow="auto"
     })
   }
 

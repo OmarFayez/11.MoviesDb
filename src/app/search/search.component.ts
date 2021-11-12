@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { MoviesService } from '../movies.service';
 
@@ -21,21 +22,17 @@ subscribtion:any;
   constructor(private _MoviesService:MoviesService) {}
 
    ngOnInit(): void {
-    document.body.style.overflow="hidden"
-    this._MoviesService.media.subscribe(()=>
+
+    this.subscribtion=this._MoviesService.media.pipe(debounceTime(500),distinctUntilChanged()).subscribe(()=>
     {
       this.searchTerm=this._MoviesService.media.getValue()
-      this.subscribtion=this._MoviesService.searchMedia(this.searchTerm,this.page).subscribe((response)=>
+     this._MoviesService.searchMedia(this.searchTerm,this.page).subscribe((response)=>
       {
         if(response.results.length=="0")
         {
           this.error="No Movies Match Your Search :"
           this.isLoading=false
-          document.body.style.overflow="auto"
-          if(this.searchTerm=="notfound")
-          {
-            this.searchTerm=""
-          }
+          this.movies=[]
         }
         else
         {
@@ -43,7 +40,6 @@ subscribtion:any;
           this.totalMovies=response.total_results
           this.error=""
           this.isLoading=false
-          document.body.style.overflow="auto"
         }
       })
     })
@@ -52,12 +48,10 @@ subscribtion:any;
    nextPage(page:number)
    {
        this.isLoading=true
-       document.body.style.overflow="hidden"
       this._MoviesService.searchMedia(this.searchTerm,page).subscribe((response)=>{
        this.movies=response.results
        this.totalMovies=response.total_results
        this.isLoading=false
-       document.body.style.overflow="auto"
    })}
 
    ngOnDestroy(): void {
