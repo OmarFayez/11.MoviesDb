@@ -10,7 +10,7 @@ export class HomeheaderComponent implements OnInit {
   constructor() { }
 
   @Input() trendingMovies:any[]=[]
-  prefixSrc="https://image.tmdb.org/t/p/w400/"
+  prefixSrc="https://image.tmdb.org/t/p/w200/"
   anonymousImage:string="https://p0.piqsels.com/preview/375/145/317/person-human-mask-head.jpg"
 
   customOptions: OwlOptions = {

@@ -1,4 +1,6 @@
 import { Component, OnDestroy, OnInit, AfterContentInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { MoviesService } from '../movies.service';
 
 @Component({
@@ -6,23 +8,20 @@ import { MoviesService } from '../movies.service';
   templateUrl: './people.component.html',
   styleUrls: ['./people.component.scss']
 })
-export class PeopleComponent implements OnInit,OnDestroy,AfterContentInit {
+export class PeopleComponent implements OnInit,OnDestroy {
+  constructor(private _MoviesService:MoviesService) { }
 
-  prefixSrc:string="https://image.tmdb.org/t/p/w400"
+  _unsubscribe:Subject<boolean>=new Subject();
+
+  prefixSrc:string="https://image.tmdb.org/t/p/w200"
   anonymousImage:string="https://p0.piqsels.com/preview/375/145/317/person-human-mask-head.jpg"
   page:number=1;
   totalPeople:any;
   peopleList:any[]=[]
   isLoading: boolean=true;
-  sub1:any;
-  sub2:any;
-
-  constructor(private _MoviesService:MoviesService) { }
-
 
   ngOnInit(): void {
-
-     this.sub1=this. _MoviesService.getMedia("person",this.page).subscribe((response)=>{
+     this. _MoviesService.getMedia("person",this.page).pipe(takeUntil(this._unsubscribe)).subscribe((response)=>{
       this.peopleList=response.results
       this.totalPeople=response.total_results
       this.isLoading=false
@@ -31,14 +30,14 @@ export class PeopleComponent implements OnInit,OnDestroy,AfterContentInit {
 
   nextPage(page:number)
   {
-      this._MoviesService.getMedia("person",page).subscribe((response)=>{
+      this._MoviesService.getMedia("person",page).pipe(takeUntil(this._unsubscribe)).subscribe((response)=>{
       this.peopleList=response.results
       this.totalPeople=response.total_results
   })}
 
-  ngAfterContentInit(): void {}
   ngOnDestroy(): void {
-    this.sub1.unsubscribe();
+    this._unsubscribe.next(true)
+    this._unsubscribe.complete()
   }
 
 }

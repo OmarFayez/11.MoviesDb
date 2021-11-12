@@ -18,7 +18,7 @@ export class HomeComponent implements AfterViewInit {
 
   trendingMoviesList:any[]=[];
 
-  prefixSrc:string="https://image.tmdb.org/t/p/w400"
+  prefixSrc:string="https://image.tmdb.org/t/p/w200"
 
   anonymousImage:string="https://p0.piqsels.com/preview/375/145/317/person-human-mask-head.jpg"
 

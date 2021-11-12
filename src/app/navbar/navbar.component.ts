@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
 import { MoviesService } from '../movies.service';
-import { debounceTime  } from 'rxjs/operators';
 
 AuthService
 @Component({
@@ -10,14 +11,12 @@ AuthService
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit {
-  isLogin:boolean=false;
-  userInfo:any;
+export class NavbarComponent {
   constructor(private _AuthService:AuthService,
     private _MoviesService:MoviesService,
     private _Router:Router)
     {
-    this._AuthService.currentUser.subscribe(()=>{
+    this._AuthService.currentUser.pipe(takeUntil(this._unsubscribe)).subscribe(()=>{
       if(this._AuthService.currentUser.getValue()!=null)
       {
         this.isLogin=true;
@@ -29,6 +28,12 @@ export class NavbarComponent implements OnInit {
       }
     })
   }
+
+  _unsubscribe:Subject<boolean>=new Subject();
+
+  isLogin:boolean=false;
+  userInfo:any;
+ 
   isLogOut()
   {
     this._AuthService.logOut()
@@ -41,8 +46,6 @@ export class NavbarComponent implements OnInit {
       this._MoviesService.saveMedia(searchTerm)
       this._Router.navigate(["search",searchTerm])
     }
-  }
-  ngOnInit(): void {
   }
   
 }
