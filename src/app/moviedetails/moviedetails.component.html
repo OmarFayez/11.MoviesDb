@@ -14,7 +14,7 @@
             <div class="geners mb-3">
                 <span *ngFor="let genre of movieDetails?.genres" class="p-2 btn btn-primary mr-2 mb-2">{{genre.name}}</span>
             </div>
-            <p>Vote : {{movieDetails?.vote_average}}</p>
+            <p>Vote : {{movieDetails?.vote_average| number : '1.1-1'}}</p>
             <p>Vote Count : {{movieDetails?.vote_count}}</p>
             <p>Popularity : {{movieDetails?.popularity}}</p>
             <p>Release Date : {{movieDetails?.release_date||movieDetails?.first_air_date}}</p>
@@ -41,12 +41,12 @@
      <ng-template carouselSlide [id]="i.toString()" >
         <a (click)="reload(movie?.media_type,movie?.id)"><div class="cover position-relative ">
             <div class="cover">
-            <img  *ngIf="movie?.poster_path!==null&& movie?.profile_path!==null" [src]="imgPrefix2+(movie?.poster_path||movie?.profile_path)" class="w-100" [alt]="movieDetails?.title||movieDetails?.name">
+            <img  *ngIf="movie?.poster_path!==null&& movie?.profile_path!==null" [src]="imgPrefixTwo+(movie?.poster_path||movie?.profile_path)" class="w-100" [alt]="movieDetails?.title||movieDetails?.name">
             <img *ngIf="movie?.poster_path==null" [src]=anonymousImage class="w-100" [alt]="movie.title">
             <div class="overlay"></div>
             </div>
             <div class="rate p-2 shadow">
-            {{movie?.vote_average}}
+            {{movie?.vote_average | number : '1.1-1'}}
             </div>
         </div>
         <h6 class="text-center">{{movie?.title||movie?.name}}</h6>

@@ -1,4 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 import { MoviesService } from '../movies.service';
 
@@ -8,34 +10,31 @@ import { MoviesService } from '../movies.service';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit,OnDestroy {
-error:string=""
-searchTerm:string=""
-page:number=1;
-totalMovies:any;
-movies:any;
-prefixSrc:string="https://image.tmdb.org/t/p/w400"
-anonymousImage:string="https://p0.piqsels.com/preview/375/145/317/person-human-mask-head.jpg"
-isLoading: boolean=true;
-subscribtion:any;
-
   constructor(private _MoviesService:MoviesService) {}
 
+  _unsubscribe:Subject<boolean>=new Subject();
+
+  error:string=""
+  searchTerm:string=""
+  page:number=1;
+  totalMovies:any;
+  movies:any;
+  prefixSrc:string="https://image.tmdb.org/t/p/w200"
+  anonymousImage:string="https://p0.piqsels.com/preview/375/145/317/person-human-mask-head.jpg"
+  isLoading: boolean=true;
+
    ngOnInit(): void {
-    document.body.style.overflow="hidden"
-    this._MoviesService.media.subscribe(()=>
+
+    this._MoviesService.media.pipe(debounceTime(500),distinctUntilChanged()).pipe(takeUntil(this._unsubscribe)).subscribe(()=>
     {
       this.searchTerm=this._MoviesService.media.getValue()
-      this.subscribtion=this._MoviesService.searchMedia(this.searchTerm,this.page).subscribe((response)=>
+     this._MoviesService.searchMedia(this.searchTerm,this.page).pipe(takeUntil(this._unsubscribe)).subscribe((response)=>
       {
         if(response.results.length=="0")
         {
           this.error="No Movies Match Your Search :"
           this.isLoading=false
-          document.body.style.overflow="auto"
-          if(this.searchTerm=="notfound")
-          {
-            this.searchTerm=""
-          }
+          this.movies=[]
         }
         else
         {
@@ -43,7 +42,6 @@ subscribtion:any;
           this.totalMovies=response.total_results
           this.error=""
           this.isLoading=false
-          document.body.style.overflow="auto"
         }
       })
     })
@@ -52,15 +50,14 @@ subscribtion:any;
    nextPage(page:number)
    {
        this.isLoading=true
-       document.body.style.overflow="hidden"
-      this._MoviesService.searchMedia(this.searchTerm,page).subscribe((response)=>{
+      this._MoviesService.searchMedia(this.searchTerm,page).pipe(takeUntil(this._unsubscribe)).subscribe((response)=>{
        this.movies=response.results
        this.totalMovies=response.total_results
        this.isLoading=false
-       document.body.style.overflow="auto"
    })}
 
    ngOnDestroy(): void {
-    this.subscribtion.unsubscribe();
+    this._unsubscribe.next(true)
+    this._unsubscribe.complete()
   }
 }

@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MoviesService } from '../movies.service';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import {Title} from "@angular/platform-browser";
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -11,15 +13,20 @@ import {Title} from "@angular/platform-browser";
   styleUrls: ['./moviedetails.component.scss']
 })
 export class MoviedetailsComponent implements OnInit,OnDestroy {
+  constructor(private _ActivatedRoute:ActivatedRoute ,private _MoviesService:MoviesService,
+    private _Router:Router,private titleService:Title) {
+    }
+    _unsubscribe:Subject<boolean>=new Subject();
+    
+
   id:string=""
   type:string=""
   movieDetails:any;
   works:any=[]
   imgPrefix:string="https://image.tmdb.org/t/p/w400"
-  imgPrefix2:string="https://image.tmdb.org/t/p/w200"
+  imgPrefixTwo:string="https://image.tmdb.org/t/p/w200"
   anonymousImage:string="https://p0.piqsels.com/preview/375/145/317/person-human-mask-head.jpg"
   isLoading: boolean=true;
-  sub1:any;
   
   customOptions: OwlOptions = {
     autoplay:true,
@@ -51,10 +58,6 @@ export class MoviedetailsComponent implements OnInit,OnDestroy {
     },
     nav: true
   }
-  constructor(private _ActivatedRoute:ActivatedRoute ,private _MoviesService:MoviesService,
-    private _Router:Router,private titleService:Title) {
-      
-    }
 
   //If i were at same component and want to go to forward and back with loading new data.
   @HostListener('window:popstate', ['$event'])
@@ -63,45 +66,38 @@ export class MoviedetailsComponent implements OnInit,OnDestroy {
   }
 
   ngOnInit(): void {
-
-
-    document.body.style.overflow="hidden"
     this.id=this._ActivatedRoute.snapshot.params.id
     this.type=this._ActivatedRoute.snapshot.params.type
     if(this.type=="movie")
     {
-      this.sub1=this._MoviesService.getMovieDetails("movie",this.id).subscribe((data)=>{
+      this._MoviesService.getMovieDetails("movie",this.id).pipe(takeUntil(this._unsubscribe)).subscribe((data)=>{
         this.movieDetails=data
         this.isLoading=false
-        document.body.style.overflow="auto"
         this.titleService.setTitle(this.movieDetails?.title||this.movieDetails?.name);
       })
-      this._MoviesService.getSimilarWorks("movie",this.id).subscribe((data)=>{
+      this._MoviesService.getSimilarWorks("movie",this.id).pipe(takeUntil(this._unsubscribe)).subscribe((data)=>{
         this.works=data?.results
       })
     }
     else if(this.type=="tv")
     {
-      this.sub1=this._MoviesService.getMovieDetails("tv",this.id).subscribe((data)=>{
+      this._MoviesService.getMovieDetails("tv",this.id).pipe(takeUntil(this._unsubscribe)).subscribe((data)=>{
         this.movieDetails=data
         this.isLoading=false
-        document.body.style.overflow="auto"
         this.titleService.setTitle(this.movieDetails?.title||this.movieDetails?.name);
       })
-      this._MoviesService.getSimilarWorks("tv",this.id).subscribe((data)=>{
+      this._MoviesService.getSimilarWorks("tv",this.id).pipe(takeUntil(this._unsubscribe)).subscribe((data)=>{
         this.works=data?.results
       })
     }
     else if(this.type=="person")
     {
-      this.sub1=this._MoviesService.getMovieDetails("person",this.id).subscribe((data)=>{
+      this._MoviesService.getMovieDetails("person",this.id).pipe(takeUntil(this._unsubscribe)).subscribe((data)=>{
         this.movieDetails=data
         this.isLoading=false
-        document.body.style.overflow="auto"
         this.titleService.setTitle(this.movieDetails?.title||this.movieDetails?.name);
       })
-
-      this._MoviesService.getPersonWorks(this.id).subscribe((data)=>{
+      this._MoviesService.getPersonWorks(this.id).pipe(takeUntil(this._unsubscribe)).subscribe((data)=>{
         this.works=data?.cast
       })
     }
@@ -131,10 +127,11 @@ export class MoviedetailsComponent implements OnInit,OnDestroy {
         this._Router.navigate(['/moviedetails',"tv",id]);
     }); 
     }
- 
   }
+
   ngOnDestroy(): void {
-    this.sub1.unsubscribe();
+    this._unsubscribe.next(true)
+    this._unsubscribe.complete()
   }
 
 }

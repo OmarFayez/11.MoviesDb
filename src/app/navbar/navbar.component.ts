@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
 import { MoviesService } from '../movies.service';
 
@@ -9,12 +11,12 @@ AuthService
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit {
-  searchTerm:string=""
-  isLogin:boolean=false;
-  userInfo:any;
-  constructor(private _AuthService:AuthService,private _MoviesService:MoviesService,private _Router:Router) {
-    this._AuthService.currentUser.subscribe(()=>{
+export class NavbarComponent {
+  constructor(private _AuthService:AuthService,
+    private _MoviesService:MoviesService,
+    private _Router:Router)
+    {
+    this._AuthService.currentUser.pipe(takeUntil(this._unsubscribe)).subscribe(()=>{
       if(this._AuthService.currentUser.getValue()!=null)
       {
         this.isLogin=true;
@@ -26,19 +28,24 @@ export class NavbarComponent implements OnInit {
       }
     })
   }
+
+  _unsubscribe:Subject<boolean>=new Subject();
+
+  isLogin:boolean=false;
+  userInfo:any;
+ 
   isLogOut()
   {
     this._AuthService.logOut()
   }
 
-  search(){
-    if(this.searchTerm!="")
+  search(term:any){
+    const searchTerm=term?.target.value
+    if(searchTerm!="")
     {
-      this._MoviesService.saveMedia(this.searchTerm)
-      this._Router.navigate(["search",this.searchTerm])
+      this._MoviesService.saveMedia(searchTerm)
+      this._Router.navigate(["search",searchTerm])
     }
-  }
-  ngOnInit(): void {
   }
   
 }
