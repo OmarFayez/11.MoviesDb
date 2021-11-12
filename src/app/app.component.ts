@@ -10,11 +10,7 @@ import { Location, PopStateEvent } from "@angular/common";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-<<<<<<< HEAD
-  title = 'Cinema Site';
-=======
     title = 'Cinema Site';
->>>>>>> 48d4b8a5686c082e3a8bbe94a19a57e7c5020db8
   private lastPoppedUrl: any;
     private yScrollStack: any[] = [];
   constructor(private router:Router, private location: Location){

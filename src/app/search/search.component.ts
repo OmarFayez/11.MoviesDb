@@ -16,7 +16,7 @@ movies:any;
 prefixSrc:string="https://image.tmdb.org/t/p/w400"
 anonymousImage:string="https://p0.piqsels.com/preview/375/145/317/person-human-mask-head.jpg"
 isLoading: boolean=true;
-sub1:any;
+subscribtion:any;
 
   constructor(private _MoviesService:MoviesService) {}
 
@@ -25,7 +25,7 @@ sub1:any;
     this._MoviesService.media.subscribe(()=>
     {
       this.searchTerm=this._MoviesService.media.getValue()
-      this.sub1=this._MoviesService.searchMedia(this.searchTerm,this.page).subscribe((response)=>
+      this.subscribtion=this._MoviesService.searchMedia(this.searchTerm,this.page).subscribe((response)=>
       {
         if(response.results.length=="0")
         {
@@ -61,6 +61,6 @@ sub1:any;
    })}
 
    ngOnDestroy(): void {
-    this.sub1.unsubscribe();
+    this.subscribtion.unsubscribe();
   }
 }
