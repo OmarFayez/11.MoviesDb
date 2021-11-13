@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import { catchError, debounceTime, map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,21 @@ import { debounceTime } from 'rxjs/operators';
 export class MoviesService {
   media:BehaviorSubject<string>=new BehaviorSubject("")
 
-  constructor(private _HttpClient:HttpClient) { }
+  constructor(private _HttpClient:HttpClient) {
+    this.getTvs().subscribe();
+  }
+   tvsSubject=new BehaviorSubject<any>('')
+
+  tvs$:Observable<any>=this.tvsSubject.asObservable();
+
+  private getTvs():Observable<any>
+  {
+    return this._HttpClient.get<any>(`https://api.themoviedb.org/3/trending/tv/day?api_key=f1aca93e54807386df3f6972a5c33b50&page=1`)
+    .pipe(tap(response=>
+      {
+        this.tvsSubject.next(response)
+      }))
+  }
   getMedia(mediaType:string,page:number):Observable<any>
   {
     return this._HttpClient.get(`https://api.themoviedb.org/3/trending/${mediaType}/day?api_key=f1aca93e54807386df3f6972a5c33b50&page=${page}`)
