@@ -12,7 +12,7 @@ import { MoviesService } from '../movies.service';
 export class HomeComponent implements AfterViewInit {
   movies$=this._MoviesService.getMedia("movie",1).pipe(tap(data=> this.trendingMoviesList=data.results),map(data=> data.results.slice(0,10)))
 
-  tv$=this._MoviesService.getMedia("tv",1).pipe(map(data=> data.results.slice(0,10)))
+  tv$=this._MoviesService.getMedia("tv",2).pipe(map(data=> data.results.slice(0,10)))
 
   people$=this._MoviesService.getMedia("person",1).pipe(map(data=>data.results.slice(0,10)))
 
